@@ -5,8 +5,8 @@ Just a live rhythmic/harmonic/mathematic cyclic visualization playground.
 
 
 #### technologies
-- react
-- baobab
+- [react](http://facebook.github.io/react) for UI componentization
+- [baobab](https://github.com/yomguithereal/baobab) for state management
 
 #### inspiration
 - bret victor

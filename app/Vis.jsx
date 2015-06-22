@@ -3,6 +3,7 @@ import assert from "assert";
 
 import {branch} from "baobab-react/mixins";
 import {parseFloatStrict, linlin, range, p2c} from "./util.js";
+import LiveInput from "./LiveInput.jsx";
 
 
 let Vis = React.createClass({
@@ -27,93 +28,34 @@ let Vis = React.createClass({
             points: genCircle(this.state.points, this.state.radius, this.state.phase)
         }
         
+        let onChange = function(e, resolve, reject) {
+            let val = parseFloatStrict(e.target.value);
+            if (isNaN(val)) reject(e.target.value);
+            else resolve(val);
+        }
 
 
 
         return (<div id="Vis">
             <div className="params">
-                <h3> params </h3>
-                <Slider cursor={["circle", "points"]} start={0} end={12} label="points:" key="points"/>
-                <Slider cursor={["circle", "radius"]} start={0} end={1} label="radius:" key="radius"/>
-                <Slider cursor={["circle", "phase"]} start={0} end={Math.PI/2} label="phase:" key="phase"/>
-            </div>
-            <div className="params">
-                <h3> just 'cuz </h3>
-                <Slider cursor={["circle", "points"]} start={0} end={12} label="points:" key="points"/>
-                <Slider cursor={["circle", "radius"]} start={0} end={1} label="radius:" key="radius"/>
-                <Slider cursor={["circle", "phase"]} start={0} end={Math.PI/2} label="phase:" key="phase"/>
+                <div>
+                    <h3> params </h3>
+                    <LiveInput cursor={["circle", "points"]} inputProps={{type: "number", min: 2, max: 200}} onChange={onChange} label="points:" key="points"/>
+                    <LiveInput cursor={["circle", "radius"]} inputProps={{type: "number", min: 0, max: 1, step: 0.01}} onChange={onChange} label="radius:" key="radius"/>
+                    <LiveInput cursor={["circle", "phase"]} inputProps={{type: "number", min: 0, max: Math.PI*2, step: 0.1}} onChange={onChange} label="phase:" key="phase"/>
+                </div>
+                <div>
+                    <h3> look how they're in sync</h3>
+                    <LiveInput cursor={["circle", "points"]} inputProps={{type: "number", min: 2, max: 200}} onChange={onChange} label="points:" key="points"/>
+                    <LiveInput cursor={["circle", "radius"]} inputProps={{type: "number", min: 0, max: 1, step: 0.01}} onChange={onChange} label="radius:" key="radius"/>
+                    <LiveInput cursor={["circle", "phase"]} inputProps={{type: "number", min: 0, max: Math.PI*2, step: 0.1}} onChange={onChange} label="phase:" key="phase"/>
+                </div>
             </div>
             <Plot {...circleProps} id="Plot"/>
-            <Debug {...circleProps} />
         </div>)
     }
 });
 
-//TODO; make into generic text input
-//- custom checking
-//- outside input overwriting
-//- why is it updating everything?
-
-let Slider = React.createClass({
-    mixins: [branch],
-    propTypes: {
-        cursor: PropTypes.arrayOf(PropTypes.string).isRequired,
-        start: PropTypes.number,
-        end: PropTypes.number,
-        label: PropTypes.any
-    },
-    cursors: function(props, context){
-        console.log(props, context);
-        return {
-            value: props.cursor
-        }
-    },
-    getInitialState() {
-        return {tempVal: null}
-    },
-    onChange(e) {
-        let newVal = parseFloatStrict(e.target.value);
-        if (isNaN(newVal)) {
-            console.log(JSON.stringify(e.target.value));
-            this.setState({tempVal: e.target.value});
-        }else {
-            this.setState({tempVal: null});
-            this.cursors.value.set(newVal);
-            this.context.tree.commit();
-        }
-    },
-    shouldComponentUpdate(nextProps, nextState) {
-        return (nextState.value !== this.state.value) ||
-            (nextState.tempVal !== this.state.tempVal);
-    },
-    componentWillUpdate(nextProps, nextState) {
-        console.log(nextProps, nextState);
-    },
-    render() {
-        let value, showRefresh, inputClass;
-
-        if (this.state.tempVal === null) {
-            value = this.state.value;
-            inputClass = "active"
-            showRefresh = false;
-        }else {
-            value = this.state.tempVal;
-            inputClass = "inactive"
-            showRefresh = true;
-        }
-        let refresh = (<div className="refresh" onClick={() => this.setState({tempVal: null})}>
-            {"\u262f"}
-        </div>)
-        return (<div className="input">
-            <div className="label"> {this.props.label} </div>
-            <div className="box"> 
-                <input className={inputClass} onChange={this.onChange}
-                value={value}/>
-                {showRefresh ? refresh : null}
-            </div>
-        </div>)
-    }
-});
 
 let Plot = React.createClass({
     propTypes: {

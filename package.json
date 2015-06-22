@@ -10,6 +10,7 @@
     "baobab": "^1.1.1",
     "baobab-react": "^0.1.1",
     "bluebird": "^2.9.30",
+    "classnames": "^2.1.2",
     "css-loader": "^0.14.5",
     "file-loader": "^0.8.4",
     "html-loader": "^0.3.0",
