@@ -1,4 +1,7 @@
-html, body, #App {
+
+$monospace: "monospace";
+
+html, body, #app {
     margin: 0;
     padding: 0;
 }
@@ -14,37 +17,32 @@ html, body, #App {
         align-self: center;
         margin-right: 10vh;
     }
-    border-bottom: 1px solid;
+    font-family: $monospace;
     margin-bottom: 10px;
 }
 
-#Vis {
-    display: flex;
-    flex-wrap: wrap;
-    >* {
-        flex: 1 0 auto;
-    }
-    .params {
-        flex: 1 0 300px;
-    }
-    .inactive {
-        background: #dddddd;
-    }
-}
-.plot {
-    box-shadow: 5px 5px 5px 5px #888888;
-}
 
-.input {
-    display: flex;
-    flex-wrap: wrap;
-    .label {
-        display: flex;
-        margin-right: 1em;
-    }
-    .box {
-        flex: 0 1 auto;
+// For HTML widgets
 
+.widget {
+    min-height: 80vh;
+    position: relative;
+    .widget-UI {
+        font-family: monospace;
+        position: absolute;
+        top: 0;
+        right: 0;
         display: flex;
+        flex-direction: column;
+        >*{
+            border-radius: 5px;
+            box-shadow: 1px 1px 1px 1px #888888;
+            background: rgba(255, 255, 255, 0.8);
+            >*{
+                margin: 20px;
+            }
+        }
+    }
+    .vis {
     }
 }

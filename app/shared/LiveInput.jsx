@@ -2,13 +2,26 @@ import React, {PropTypes} from "react";
 import classNames from "classnames";
 import {branch} from "baobab-react/mixins";
 
-let LiveInput = React.createClass({
+import util from "./util";
+
+export default React.createClass({
     mixins: [branch],
+    statics: {
+        acceptFloat(e, resolve, reject) {
+            let val = util.parseFloatStrict(e.target.value);
+            if (isNaN(val)) reject(e.target.value);
+            else resolve(val);
+        }
+    },
     propTypes: {
         cursor: PropTypes.any.isRequired,
         onChange: PropTypes.func,
-        label: PropTypes.any,
         inputProps: PropTypes.object,
+    },
+    getDefaultProps() {
+        return {
+            onChange: (e, res) => res(e),
+        }
     },
     cursors: function(props, context){
         return {
@@ -18,9 +31,6 @@ let LiveInput = React.createClass({
     getInitialState() {
         return {tempVal: null}
     },
-    _defaultOnChange(e, resolve, reject) {
-        resolve(e);
-    },
     onChange(e) {
         let resolve = function(newVal) {
             this.setState({tempVal: null});
@@ -29,19 +39,16 @@ let LiveInput = React.createClass({
         }.bind(this);
 
         let reject = function(tempVal) {
-            console.log("rejected!", tempVal);
             this.setState({tempVal: tempVal});
         }.bind(this);
-        if (this.props.onChange) 
-            this.props.onChange(e, resolve, reject);
-        else this._defaultOnChange(e, resolve, reject);
+
+        this.props.onChange(e, resolve, reject);
     },
     shouldComponentUpdate(nextProps, nextState) {
         return (nextState.value !== this.state.value) ||
             (nextState.tempVal !== this.state.tempVal);
     },
     render() {
-        console.log(this.props.label);
         let value, showRefresh, activityClass;
 
         if (this.state.tempVal === null) {
@@ -55,14 +62,10 @@ let LiveInput = React.createClass({
         }
         let refresh = (<div className="refresh" onClick={() => this.setState({tempVal: null})}>
             {"\u262f"}
-        </div>)
-        return (<div className={classNames("input", activityClass)}>
-            <div className="label"> {this.props.label} </div>
-            <div className="box"> 
-                <input {...this.props.inputProps} onChange={this.onChange} value={value}/>
-                {showRefresh ? refresh : null}
-            </div>
-        </div>)
+        </div>);
+        return (<span className={classNames("input", activityClass)}> 
+            <input {...this.props.inputProps} onChange={this.onChange} value={value}/>
+            {showRefresh ? refresh : null}
+        </span>)
     }
 });
-export default LiveInput

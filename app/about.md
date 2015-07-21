@@ -1,19 +1,10 @@
-Just a live rhythmic/harmonic/mathematic cyclic visualization playground.
+A collection of interactive exploratory interfaces.
 
-**bagels** b/c cycles of cycles.
-
-
-
-#### technologies
+#### a few of the technologies:
 - [react](http://facebook.github.io/react) for UI componentization
 - [baobab](https://github.com/yomguithereal/baobab) for state management
 
-#### inspiration
+#### inspirations:
 - bret victor
-- ethan hein
 - godfried toussaint
-
-#### future directions?
-- wire parameters to sliders
-
 
