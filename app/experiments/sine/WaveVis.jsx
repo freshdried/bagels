@@ -15,19 +15,18 @@ export default React.createClass({
         opacity: ["opacity"],
         size: ["size"],
         repaint_opacity: ["repaint_opacity"],
-        dc: ["dc"]
     },
     render() {
         let {
             samplerate, duration, amp, freq, phase,
-            opacity, size, repaint_opacity, dc
+            opacity, size, repaint_opacity 
         } = this.state;
 
         let frames = samplerate * duration;
         let x = (i) => i/samplerate;
         let y = (i) => amp * Math.sin(
             2 * Math.PI * (i/samplerate) * freq + phase * Math.PI
-        ) + dc;
+        );
 
 
         let data  = [

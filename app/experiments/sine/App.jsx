@@ -50,8 +50,7 @@ const SineWidget = React.createClass({
                         <div>
                             <div> Opacity: </div>
                             <LiveInput cursor={["opacity"]}
-                                       inputProps={{type: "range", min: 0, max: 1, step: 0.01}}
-                                       onChange={acceptFloat}/>
+                                       inputProps={{type: "range", min: 0, max: 1, step: 0.01}}/>
                         </div>
                         <div>
                             <span> Size: </span>
@@ -70,14 +69,6 @@ const SineWidget = React.createClass({
                     <div>
                         <Sweep/>
                         <Play/>
-                    </div>
-                    <div>
-                        <div>
-                            <span> DC Offset: </span>
-                            <LiveInput cursor={["dc"]}
-                                       inputProps={{type: "number", min: 0, max: 1, step: 0.01}}
-                                       onChange={acceptFloat}/>
-                        </div>
                     </div>
                 </div>
             </div>

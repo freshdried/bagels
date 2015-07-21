@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.scss"
+import "./linkreset.css"
 
 import {Router, Route, Link} from "react-router";
 import HashHistory from 'react-router/lib/HashHistory'

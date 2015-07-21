@@ -16,7 +16,6 @@ export default React.createClass({
         amp: ["amp"],
         freq: ["freq"],
         phase: ["phase"],
-        dc: ["dc"],
     },
     componentDidMount() {
         this.updatePlay();
@@ -38,7 +37,7 @@ export default React.createClass({
 
         let sine = (i) => amp * Math.sin(
             2 * Math.PI * (i/samplerate) * freq + phase * Math.PI
-        ) + dc;
+        );
 
         let buflen = _samplerate * duration;
 

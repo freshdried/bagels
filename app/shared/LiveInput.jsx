@@ -20,7 +20,7 @@ export default React.createClass({
     },
     getDefaultProps() {
         return {
-            onChange: (e, res) => res(e),
+            onChange: (e, res) => res(e.target.value),
         }
     },
     cursors: function(props, context){
