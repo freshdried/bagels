@@ -22,7 +22,7 @@ const default_settings = {
     size: 1,
     repaint_opacity: 0.01,
     sweeprate: 0,
-    sweeping: false,
+    sweeping: true,
     playing: false
 }
 
