@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
-import {root} from "baobab-react/mixins";
+import {branch} from "baobab-react/mixins";
 
-import tree from "./tree.js";
 
 import util from "../../shared/util.js";
 import LiveInput, {acceptFloat} from "../../shared/LiveInput.jsx";
@@ -10,9 +9,34 @@ import WaveVis from "./WaveVis.jsx";
 import Play from "./Play.jsx";
 import Sweep from "./Sweep.jsx";
 
+import tree from "../../tree.js";
+
+
+const default_settings = {
+    samplerate: 1000,
+    duration: 1,
+    amp: 0.75,
+    freq: 500,
+    phase: 0.5,
+    opacity: 1,
+    size: 1,
+    repaint_opacity: 0.01,
+    sweeprate: 0,
+    sweeping: false,
+    playing: false
+}
+
+
+
 const SineWidget = React.createClass({
-    mixins: [root],
+    componentWillMount() {
+        if (!tree.get("sine")) {
+            console.log("setting keys");
+            tree.set(["sine"], default_settings);
+        }
+    },
     render() {
+        console.log("rendering");
         return (
             <div className="widget">
                 <WaveVis/>
@@ -20,28 +44,31 @@ const SineWidget = React.createClass({
                     <div>
                         <div>
                             <span> Amplitude: </span>
-                            <LiveInput cursor={["amp"]}
+                            <LiveInput cursor={["sine","amp"]}
                                        inputProps={{type: "range", min: 0, max: 1, step: 0.01}}/>
-                            <LiveInput cursor={["amp"]}
+                            <LiveInput cursor={["sine","amp"]}
                                        inputProps={{type: "number", min: 0, max: 1, step: 0.01}}
                                        onChange={acceptFloat}/>
                         </div>
                         <div>
                             <span> Frequency: </span>
-                            <LiveInput cursor={["freq"]}
-                                       inputProps={{type: "number", min: 1, max: 4000, step: 0.01}}
+                            <LiveInput cursor={["sine","freq"]}
+                                       inputProps={{type: "range", min: 1, max: 22050, step: 1}}
+                                       onChange={acceptFloat} />
+                            <LiveInput cursor={["sine","freq"]}
+                                       inputProps={{type: "number", min: 1, max: 22050, step: 1}}
                                        onChange={acceptFloat}/>
                             <span> Hz</span>
                         </div>
                         <div>
                             <span> Phase: </span>
-                            <LiveInput cursor={["phase"]}
+                            <LiveInput cursor={["sine","phase"]}
                                        inputProps={{type: "range", min: 0, max: 1, step: 0.01}}
                                        onChange={acceptFloat}/>
                         </div>
                         <div>
                             <span> Sampling Rate: </span>
-                            <LiveInput cursor={["samplerate"]}
+                            <LiveInput cursor={["sine","samplerate"]}
                                        inputProps={{type: "number", min: 0, max: 441000, step: 1}}
                                        onChange={acceptFloat}/>
                         </div>
@@ -49,20 +76,23 @@ const SineWidget = React.createClass({
                     <div>
                         <div>
                             <div> Opacity: </div>
-                            <LiveInput cursor={["opacity"]}
+                            <LiveInput cursor={["sine","opacity"]}
                                        inputProps={{type: "range", min: 0, max: 1, step: 0.01}}/>
                         </div>
                         <div>
                             <span> Size: </span>
-                            <LiveInput cursor={["size"]}
+                            <LiveInput cursor={["sine","size"]}
                                        inputProps={{type: "number", min: 1, max: 50, step: 1}}
                                        onChange={acceptFloat}/>
                             <span>px</span>
                         </div>
                         <div>
                             <div> Repaint Opacity: </div>
-                            <LiveInput cursor={["repaint_opacity"]}
-                                       inputProps={{type: "range", min: 0, max: 1, step: 0.01}}
+                            <LiveInput cursor={["sine","repaint_opacity"]}
+                                       inputProps={{type: "range", min: 0, max: 1, step: 0.005}}
+                                       onChange={acceptFloat}/>
+                            <LiveInput cursor={["sine","repaint_opacity"]}
+                                       inputProps={{type: "number", min: 0, max: 1, step: 0.005}}
                                        onChange={acceptFloat}/>
                         </div>
                     </div>
@@ -78,18 +108,9 @@ const SineWidget = React.createClass({
 
 
 
-
-const SineWidgetContainer = React.createClass({
-    render() {
-        return (<SineWidget tree={tree}/>)
-    }
-});
-
-
-
 export default {
     path: 'sine',
     name: "Sine",
     description: "Sampling a Sine Wave...",
-    component: SineWidgetContainer
+    component: SineWidget
 }

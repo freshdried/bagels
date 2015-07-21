@@ -2,12 +2,14 @@ import React, {PropTypes} from 'react';
 import {branch} from "baobab-react/mixins";
 
 import LiveInput, {acceptFloat} from "../../shared/LiveInput.jsx";
+import LiveButton from "../../shared/LiveButton.jsx";
 
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        sweeprate: ["sweeprate"],
-        freq: ["freq"],
+        sweeprate: ["sine", "sweeprate"],
+        sweeping: ["sine", "sweeping"],
+        freq: ["sine", "freq"],
     },
     getInitialState() {
         return {
@@ -22,37 +24,37 @@ export default React.createClass({
     },
     shouldComponentUpdate(nextProps, nextState) {
         // only update playback on sweeprate changes
-        return (nextState.sweeprate !== this.state.sweeprate);
+        return (nextState.sweeprate !== this.state.sweeprate)
+            || (nextState.sweeping !== this.state.sweeping);
     },
     _sweepNext() {
         this.cursors.freq.set(this.state.freq + this.state.sweeprate);
         /*         this.context.tree.commit(); */
     },
     updateSweep() {
-        let sweeprate = this.state.sweeprate;
-        let oldInterval = this.state.sweepInterval;
-
-        if (oldInterval) window.clearInterval(oldInterval);
-        if (sweeprate !== 0) {
-            let newInterval = window.setInterval(this._sweepNext, 17); //60fps
-            this.setState({sweepInterval: newInterval});
+        let {sweeping, sweeprate} = this.state;
+        if (sweeping && sweeprate !== 0) {
+            window.clearInterval(this.state.sweepInterval); //clear old interval
+            this.setState({
+                sweepInterval: window.setInterval(this._sweepNext, 17)
+            });
+        } else {
+            window.clearInterval(this.state.sweepInterval); //clear old interval
         }
+    },
+    componentWillUnmount() {
+        window.clearInterval(this.state.sweepInterval);
     },
     render() {
         return (
             <div>
                 <span> Sweep: </span>
-                <LiveInput cursor={["sweeprate"]}
+                <LiveInput cursor={["sine", "sweeprate"]}
                            inputProps={{type: "number", min: -1, max: 1, step: 0.001}}
                            onChange={acceptFloat} />
-                <button onClick={function() {
-                                 let oldInterval = this.state.sweepinterval;
-                                 if (oldInterval) window.clearInterval(oldInterval);
-                                 this.cursors.sweeprate.set(0);
-                                 this.context.tree.commit();
-                                 }.bind(this)}>
-                    {"\u25FC"}
-                </button>
+                <LiveButton cursor={["sine", "sweeping"]}
+                            on={<button>{"\u25FC"}</button>}
+                            off={<button>{"\u25B6"}</button>}/>
             </div>
         )
     }

@@ -1,4 +1,5 @@
 import React from "react";
+import {root} from "baobab-react/mixins";
 import "./style.scss"
 import "./linkreset.css"
 
@@ -9,9 +10,9 @@ import HashHistory from 'react-router/lib/HashHistory'
 import App from "./App.jsx";
 import About from "./About.jsx";
 
-import experiments from "./experiments.js";
+import tree from "./tree.js";
 
-console.log(experiments);
+import experiments from "./experiments.js";
 
 
 let childRoutes = experiments.map((obj) => ({
@@ -24,8 +25,24 @@ let childRoutes = experiments.map((obj) => ({
     }
 ]);
 
+let RootContainer = React.createClass({
+    render() {
+        return (<Root tree={tree} {...this.props}/>)
+    }
+});
+
+let Root = React.createClass({
+    mixins: [root],
+    render() {
+        return (
+            <Router history={new HashHistory()}>
+                <Route path="/" component={App} childRoutes={childRoutes}/>
+            </Router>
+        )
+    }
+})
+
+
 React.render((
-    <Router history={new HashHistory()}>
-        <Route path="/" component={App} childRoutes={childRoutes}/>
-    </Router>
+    <RootContainer/>
 ), document.body);

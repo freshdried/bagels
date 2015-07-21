@@ -10,12 +10,12 @@ let audioCtx = new AudioContext();
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        playing: ["playing"],
-        samplerate: ["samplerate"],
-        duration: ["duration"],
-        amp: ["amp"],
-        freq: ["freq"],
-        phase: ["phase"],
+        playing: ["sine", "playing"],
+        samplerate: ["sine", "samplerate"],
+        duration: ["sine", "duration"],
+        amp: ["sine", "amp"],
+        freq: ["sine", "freq"],
+        phase: ["sine", "phase"],
     },
     componentDidMount() {
         this.updatePlay();

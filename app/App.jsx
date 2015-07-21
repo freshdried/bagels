@@ -1,8 +1,5 @@
 import React, {propTypes} from "react";
-import {root} from "baobab-react/mixins"
-
-import Nav from "./Nav.jsx"
-
+import Nav from "./Nav.jsx";
 
 let App = React.createClass({
     render() {
@@ -14,11 +11,5 @@ let App = React.createClass({
         )
     }
 });
-
-
-
-
-
-
 
 export default App;

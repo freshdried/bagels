@@ -7,16 +7,17 @@ import CanvasScatterPlot from "../../shared/CanvasScatterPlot.jsx"
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        samplerate: ["samplerate"],
-        duration: ["duration"],
-        amp: ["amp"],
-        freq: ["freq"],
-        phase: ["phase"],
-        opacity: ["opacity"],
-        size: ["size"],
-        repaint_opacity: ["repaint_opacity"],
+        samplerate: ["sine", "samplerate"],
+        duration: ["sine", "duration"],
+        amp: ["sine", "amp"],
+        freq: ["sine", "freq"],
+        phase: ["sine", "phase"],
+        opacity: ["sine", "opacity"],
+        size: ["sine", "size"],
+        repaint_opacity: ["sine", "repaint_opacity"],
     },
     render() {
+        if (this.state.samplerate === undefined) return (<div className="vis"> Loading... </div>)
         let {
             samplerate, duration, amp, freq, phase,
             opacity, size, repaint_opacity 
