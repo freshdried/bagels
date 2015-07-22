@@ -4,17 +4,19 @@ import {branch} from "baobab-react/mixins";
 import util from "../../shared/util.js"
 import CanvasScatterPlot from "../../shared/CanvasScatterPlot.jsx"
 
+import {path} from "./config.js";
+
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        samplerate: ["sine", "samplerate"],
-        duration: ["sine", "duration"],
-        amp: ["sine", "amp"],
-        freq: ["sine", "freq"],
-        phase: ["sine", "phase"],
-        opacity: ["sine", "opacity"],
-        size: ["sine", "size"],
-        repaint_opacity: ["sine", "repaint_opacity"],
+        samplerate: [path, "samplerate"],
+        duration: [path, "duration"],
+        amp: [path, "amp"],
+        freq: [path, "freq"],
+        phase: [path, "phase"],
+        opacity: [path, "opacity"],
+        size: [path, "size"],
+        repaint_opacity: [path, "repaint_opacity"],
     },
     render() {
         if (this.state.samplerate === undefined) return (<div className="vis"> Loading... </div>)

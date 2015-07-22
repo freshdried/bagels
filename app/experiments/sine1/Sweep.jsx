@@ -4,12 +4,14 @@ import {branch} from "baobab-react/mixins";
 import LiveInput, {acceptFloat} from "../../shared/LiveInput.jsx";
 import LiveButton from "../../shared/LiveButton.jsx";
 
+import {path} from "./config.js";
+
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        sweeprate: ["sine", "sweeprate"],
-        sweeping: ["sine", "sweeping"],
-        freq: ["sine", "freq"],
+        sweeprate: [path, "sweeprate"],
+        sweeping: [path, "sweeping"],
+        freq: [path, "freq"],
     },
     getInitialState() {
         return {
@@ -49,10 +51,10 @@ export default React.createClass({
         return (
             <div>
                 <span> Sweep: </span>
-                <LiveInput cursor={["sine", "sweeprate"]}
+                <LiveInput cursor={[path, "sweeprate"]}
                            inputProps={{type: "number", min: -1, max: 1, step: 0.001}}
                            onChange={acceptFloat} />
-                <LiveButton cursor={["sine", "sweeping"]}
+                <LiveButton cursor={[path, "sweeping"]}
                             on={<button>{"\u25FC"}</button>}
                             off={<button>{"\u25B6"}</button>}/>
             </div>

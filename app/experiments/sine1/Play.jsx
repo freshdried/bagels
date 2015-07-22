@@ -4,18 +4,19 @@ import {branch} from "baobab-react/mixins";
 import util from "../../shared/util.js"
 import LiveButton from "../../shared/LiveButton.jsx";
 
+import {path} from "./config.js";
 //TODO: clean up Audio Context
 let audioCtx = new AudioContext();
 
 export default React.createClass({
     mixins: [branch],
     cursors: {
-        playing: ["sine", "playing"],
-        samplerate: ["sine", "samplerate"],
-        duration: ["sine", "duration"],
-        amp: ["sine", "amp"],
-        freq: ["sine", "freq"],
-        phase: ["sine", "phase"],
+        playing: [path, "playing"],
+        samplerate: [path, "samplerate"],
+        duration: [path, "duration"],
+        amp: [path, "amp"],
+        freq: [path, "freq"],
+        phase: [path, "phase"],
     },
     componentDidMount() {
         this.updatePlay();
